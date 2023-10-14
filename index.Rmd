@@ -11,4 +11,14 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to the carbon footprint of AI/ the impact of carbon markets on decreasing greenhouse gas emissions. 
+I will be using the Political Violence dataset (on the Gov 50 milestone page)  for my final project. My research question is: How does the number of Deaths from Political Violence per One Million Citizens relate to the number of Coups d'Etats in that country?
+My hypothesis is that as the number of Coup d’etats in a country increases, the number of deaths from political violence per one million citizens in that country will also increase.I believe this will occur because more political instability is likely to lead to more conflict, and more conflict will lead to more civilian casualties. 
+My explanatory variable is the number of Coup D’etats. 
+My outcome variable of interest is the deaths from political violence per one million citizens. 
+
+
+The observed pattern in the data that would support my hypothesis is that there would be a positive correlation between the number of Coup d’etats in a country and the number of deaths from political violence per one million citizens in that country. If those two variables had a negative
+relationship, than my hypothesis would be disproved. 
+
+
+I will be using the variables coups60, coups70, and coups80 for the Coup d'etat information. I will be using deathsPC60, deathsPC70, deathsPC80 for the deaths from political violence information. This way I will also be able to track how the outcome from my analysis changes between decades. 
