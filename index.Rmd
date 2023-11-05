@@ -22,3 +22,27 @@ relationship, than my hypothesis would be disproved.
 
 
 I will be using the variables coups60, coups70, and coups80 for the Coup d'etat information. I will be using deathsPC60, deathsPC70, deathsPC80 for the deaths from political violence information. This way I will also be able to track how the outcome from my analysis changes between decades. 
+
+
+# Loading data 
+
+```{r}
+
+library(readr)
+library(ggplot2)
+chi_data<- read_csv("Chicago Health Atlas Data Download - Community areas.csv")
+
+head(chi_data)
+
+
+plot_1 <- ggplot(chi_data, aes(x = LDPC_2022, y = EDB_2017-2021)) + 
+  geom_point() + 
+  labs( x = "Blood Lead Levels in Children ", 
+        y = "High School Graduation rate", 
+        title = "Relationship between lead exposure and high school graduation rates")
+
+plot_1
+
+```
+
+# Showing correlation between 
