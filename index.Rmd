@@ -11,17 +11,16 @@ output:
 
 ## Project thoughts
 
-I will be using the Political Violence dataset (on the Gov 50 milestone page)  for my final project. My research question is: How does the number of Deaths from Political Violence per One Million Citizens relate to the number of Coups d'Etats in that country?
-My hypothesis is that as the number of Coup d’etats in a country increases, the number of deaths from political violence per one million citizens in that country will also increase.I believe this will occur because more political instability is likely to lead to more conflict, and more conflict will lead to more civilian casualties. 
-My explanatory variable is the number of Coup D’etats. 
-My outcome variable of interest is the deaths from political violence per one million citizens. 
+I will be using the Chicago Health Data for my final project. My research question will be: How does elevated blood lead levels correspond with success outcomes for different neighborhoods in Chicago?
+My hypothesis is that when blood lead levels are higher, the income, graduation rate, and health outcomes for people in that neighborhood will be lower. I believe this will occur because high lead levels are correlated with low-income housing, and can lead to lower iq scores in children.  
+My explanatory variable is the blood lead level of children in any particular neighborhood.  
+My outcome variables of interest are income, high school graduation rate, and iq. 
 
 
-The observed pattern in the data that would support my hypothesis is that there would be a positive correlation between the number of Coup d’etats in a country and the number of deaths from political violence per one million citizens in that country. If those two variables had a negative
-relationship, than my hypothesis would be disproved. 
+The observed pattern in the data that would support my hypothesis is that there would be a negative correlation between the blood lead count in children and and income, graduation rate, and iq. If those two variables had a positive relationship, than my hypothesis would be disproved. 
 
 
-I will be using the variables coups60, coups70, and coups80 for the Coup d'etat information. I will be using deathsPC60, deathsPC70, deathsPC80 for the deaths from political violence information. This way I will also be able to track how the outcome from my analysis changes between decades. 
+I will be using the variables Inc_21 and EDB_21 for now for the outcome information I will be using LDPC_22 for the blood lead levels. This way I will also be able to track how the outcome from my analysis changes between outcomes 
 
 
 # Loading data 
@@ -30,16 +29,21 @@ I will be using the variables coups60, coups70, and coups80 for the Coup d'etat 
 
 library(readr)
 library(ggplot2)
-chi_data<- read_csv("Chicago Health Atlas Data Download - Community areas.csv")
+Chicago_Health_Data_ <- read_csv("Chicago Health Data .csv")
+Chicago_Health_Data_$LDPC_22 <- as.numeric(Chicago_Health_Data_$LDPC_22)
+Chicago_Health_Data_$EDB_21 <- as.numeric(Chicago_Health_Data_$EDB_21)
 
-head(chi_data)
+max_LDPC <- max(Chicago_Health_Data_$LDPC_22, na.rm = TRUE)
+max_EDB <- max(Chicago_Health_Data_$EDB_21, na.rm = TRUE)
 
 
-plot_1 <- ggplot(chi_data, aes(x = LDPC_2022, y = EDB_2017-2021)) + 
+plot_1 <- ggplot(Chicago_Health_Data_, aes(x = EDB_21, y = LDPC_22)) + 
   geom_point() + 
-  labs( x = "Blood Lead Levels in Children ", 
-        y = "High School Graduation rate", 
-        title = "Relationship between lead exposure and high school graduation rates")
+  labs( x = "High School Graduation rate(%)",
+        y = "Number of children aged 1-5 with peak annual blood lead level(µg/dL) ", 
+        title = "Relationship between lead exposure and high school graduation rates") +
+scale_y_continuous(breaks = seq(0, ceiling(max_LDPC), by = 5)) +
+  scale_x_continuous(breaks = seq(0, ceiling(max_EDB), by = 5))
 
 plot_1
 
