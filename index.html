@@ -1537,7 +1537,6 @@ My outcome variables of interest are income, high school graduation rate, and iq
 <span><span class='va'>max_EDB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>Chicago_Health_Data_</span><span class='op'>$</span><span class='va'>EDB_21</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-#Showing Correlation
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>plot_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>Chicago_Health_Data_</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>EDB_21</span>, y <span class='op'>=</span> <span class='va'>LDPC_22</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
