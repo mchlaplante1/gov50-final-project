@@ -27,6 +27,10 @@ I will be using the variables Inc_21 and EDB_21 for now for the outcome informat
 
 ```{r}
 
+<meta http-equiv='cache-control' content='no-cache'> 
+<meta http-equiv='expires' content='0'> 
+<meta http-equiv='pragma' content='no-cache'>
+
 library(readr)
 library(ggplot2)
 Chicago_Health_Data_ <- read_csv("Chicago Health Data .csv")
