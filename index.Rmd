@@ -65,4 +65,4 @@ fit_1 <- lm(EDB_21~LDPC_22, data = Chicago_Health_Data_)
 tidy_result <- tidy(fit_1)
 print(tidy_result)
 ```
-This means that for every increase in 1 child that has blood lead levels higher than the safe level, there is a decrease in 2% of the graduation rate
+This means that for every increase in 1 child that has blood lead levels higher than the safe level, there is a decrease in 2% of the graduation rate. This supports my hypothesis that there is be a negative correlation between the number of children with high blood lead count and graduation rate.  
