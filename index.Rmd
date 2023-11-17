@@ -54,6 +54,9 @@ scale_y_continuous(breaks = seq(0, ceiling(max_LDPC), by = 5)) +
 plot_1
 
 ```
+
+
+
 ```{r}
 library(broom)
 
