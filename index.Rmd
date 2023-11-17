@@ -27,9 +27,6 @@ I will be using the variables Inc_21 and EDB_21 for now for the outcome informat
 
 ```{r}
 
-<meta http-equiv='cache-control' content='no-cache'> 
-<meta http-equiv='expires' content='0'> 
-<meta http-equiv='pragma' content='no-cache'>
 
 library(readr)
 library(ggplot2)
@@ -39,10 +36,15 @@ Chicago_Health_Data_$EDB_21 <- as.numeric(Chicago_Health_Data_$EDB_21)
 
 max_LDPC <- max(Chicago_Health_Data_$LDPC_22, na.rm = TRUE)
 max_EDB <- max(Chicago_Health_Data_$EDB_21, na.rm = TRUE)
+```
 
+
+
+```{r}
 
 plot_1 <- ggplot(Chicago_Health_Data_, aes(x = EDB_21, y = LDPC_22)) + 
   geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue" ) +
   labs( x = "High School Graduation rate(%)",
         y = "Number of children aged 1-5 with peak annual blood lead level(µg/dL) ", 
         title = "Relationship between lead exposure and high school graduation rates") +
@@ -52,5 +54,12 @@ scale_y_continuous(breaks = seq(0, ceiling(max_LDPC), by = 5)) +
 plot_1
 
 ```
+```{r}
+library(broom)
 
-# Showing correlation between 
+fit_1 <- lm(EDB_21~LDPC_22, data = Chicago_Health_Data_)
+
+tidy_result <- tidy(fit_1)
+print(tidy_result)
+```
+This means that for every increase in 1 child that has blood lead levels higher than the safe level, there is a decrease in 2% of the graduation rate
