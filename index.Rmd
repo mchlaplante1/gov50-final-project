@@ -9,60 +9,170 @@ output:
 
 
 
-## Project thoughts
+## Introduction
 
-I will be using the Chicago Health Data for my final project. My research question will be: How does elevated blood lead levels correspond with success outcomes for different neighborhoods in Chicago?
-My hypothesis is that when blood lead levels are higher, the income, graduation rate, and health outcomes for people in that neighborhood will be lower. I believe this will occur because high lead levels are correlated with low-income housing, and can lead to lower iq scores in children.  
-My explanatory variable is the blood lead level of children in any particular neighborhood.  
-My outcome variables of interest are income, high school graduation rate, and iq. 
+My final project will examine the research question: How does the percent of elevated blood lead levels of children aged 1-5 correspond with success outcomes between different neighborhoods in Chicago? I first became interested in this topic last year when I wrote a paper about how neighborhoods that were historically redlined in Chicago also had poorer health outcomes than neighborhoods that were not redlined. In conducting this research, I found that many of the houses located in historically red-lined districts had lead pipes, which can contaminate water and be unhealthy for inhabitants. Therefore, I want to deeply explore how higher blood lead levels in children in Chicago is correlated with different health outcomes across different neighborhoods in Chicago. Namely, I will be using blood lead level as my independent variable, and high school graduation rate as my main dependent variable. I will also be examining the correlation between blood lead level and income.  
 
 
-The observed pattern in the data that would support my hypothesis is that there would be a negative correlation between the blood lead count in children and and income, graduation rate, and iq. If those two variables had a positive relationship, than my hypothesis would be disproved. 
+My hypothesis is that when the percentage of blood lead levels in children aged 1-5 are higher in a particular area, the median income and graduation rates for individuals in that neighborhood will be lower. I believe this will occur because low-income housing is more likely to have lead pipes, and lead exposure in children can lead to lower iq's and behavior issues, which can lead to worse educational outcomes for children.  
 
 
-I will be using the variables Inc_21 and EDB_21 for now for the outcome information I will be using LDPC_22 for the blood lead levels. This way I will also be able to track how the outcome from my analysis changes between outcomes 
+
+## Data Section 
+
+All of my data comes from data collected by the city of Chicago through the Chicago Health Atlas (https://chicagohealthatlas.org/)
+
+The Lead Level variable (LDPP_2022) is measured by the Lead Poisoning Rate. This is the percent of children ages 1-5 with blood lead level at or above 5 micrograms per deciliter. This data was collected by the Chicago Department of Public Health, Lead Poisoning Prevention Program through testing. (survey) 
+
+The High School Graduation Rate (Grad_Rate) is the % of residents 25 or older with at least a high school degree: including GED and any higher education. The data was gathered through The American Community Survey. (survey)
+
+The Income variable (Income) is measured in median household income, and the data was gathered through The American Community Survey.  (survey)
 
 
-# Loading data 
+
+# Loading data  
 
 ```{r}
 
 
 library(readr)
 library(ggplot2)
-Chicago_Health_Data_ <- read_csv("Chicago Health Data .csv")
-Chicago_Health_Data_$LDPC_22 <- as.numeric(Chicago_Health_Data_$LDPC_22)
-Chicago_Health_Data_$EDB_21 <- as.numeric(Chicago_Health_Data_$EDB_21)
+Chi_Health_Data <- read_csv("~/gov50-problem-set0/Final Project/Chi_Health_Data.csv")
 
-max_LDPC <- max(Chicago_Health_Data_$LDPC_22, na.rm = TRUE)
-max_EDB <- max(Chicago_Health_Data_$EDB_21, na.rm = TRUE)
 ```
+#Relationship between dependent variables
+
+```{r}
+library(ggplot2)
+
+Chi_Health_Data$Grad_Rate <- as.numeric(Chi_Health_Data$Grad_Rate)
+Chi_Health_Data$Income <- as.numeric(Chi_Health_Data$Income)
+
+max_Grad_Rate<- max(Chi_Health_Data$Grad_Rate, na.rm = TRUE)
+max_Income <- max(Chi_Health_Data$Income, na.rm = TRUE)
+
+
+plot_1 <- ggplot(Chi_Health_Data, aes(x = Income, y = Grad_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue" ) +
+  labs( y = "Graduation Rate (%)",
+        x = "Income ", 
+        title = "Relationship between Income and Graduation Rate") +
+scale_y_continuous(breaks = seq(0, ceiling(max_Grad_Rate), by = 5)) +
+  scale_x_continuous(breaks = seq(0, ceiling(max_Income), by = 10000))
+
+plot_1
+
+
+```
+
+There is a positive relationship between Income and Graduation rate, which means that people with higher median incomes are more likely to graduate high school, and vice versa. 
+
+
+
+
+## Results 
+
+My study is cross-sectional, and I first examine the relationship between blood lead levels and graduation rate.  I then also examine the relationship between blood lead levels and median income. 
 
 
 
 ```{r}
+Chi_Health_Data$Grad_Rate <- as.numeric(Chi_Health_Data$Grad_Rate)
+Chi_Health_Data$LDPP_2022 <- as.numeric(Chi_Health_Data$LDPP_2022)
 
-plot_1 <- ggplot(Chicago_Health_Data_, aes(x = EDB_21, y = LDPC_22)) + 
+max_Grad_Rate<- max(Chi_Health_Data$Grad_Rate, na.rm = TRUE)
+max_LDPP_2022 <- max(Chi_Health_Data$LDPP_2022, na.rm = TRUE)
+
+```
+
+
+# plot of relationship between lead levels and graduation rate
+
+```{r}
+library(ggplot2)
+plot_1 <- ggplot(Chi_Health_Data, aes(x = LDPP_2022, y = Grad_Rate)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE, color = "blue" ) +
-  labs( x = "High School Graduation rate(%)",
-        y = "Number of children aged 1-5 with peak annual blood lead level(µg/dL) ", 
+  labs( y = "Graduation Rate(%)",
+        x = "Percent of children ages 1-5 with blood lead level at or above 5 micrograms (deciliter)", 
         title = "Relationship between lead exposure and high school graduation rates") +
-scale_y_continuous(breaks = seq(0, ceiling(max_LDPC), by = 5)) +
-  scale_x_continuous(breaks = seq(0, ceiling(max_EDB), by = 5))
+scale_y_continuous(breaks = seq(0, ceiling(max_Grad_Rate), by = 5)) +
+  scale_x_continuous(breaks = seq(0, ceiling(max_LDPP_2022), by = 1))
 
 plot_1
 
 ```
+This plot shows that there is a negative correlation between Graduation rate and Blood Lead levels. This means that neighborhoods with a higher percentage of children aged 1-5 with blood lead levels above 5 micrograms per deciliter have lower graduation rates. 
 
 
+# regression analysis for Blood lead levels and graduation rate
 
 ```{r}
+library(ggplot2)
 library(broom)
 
-fit_1 <- lm(EDB_21~LDPC_22, data = Chicago_Health_Data_)
+fit_1 <- lm(Grad_Rate ~ LDPP_2022, data = Chi_Health_Data)
 
 tidy_result <- tidy(fit_1)
-print(tidy_result)
+
+
+modelsummary::modelsummary(fit_1,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+
 ```
-This means that for every increase in 1 child that has blood lead levels higher than the safe level, there is a decrease in 2% of the graduation rate. This supports my hypothesis that there is be a negative correlation between the number of children with high blood lead count and graduation rate.  
+
+This regression shows that for every 1% increase in the percentage of children aged 1-5 that have elevated blood lead levels, there is a decrease of 2.284% in the Graduation Rate. The p-value for LDPP_2022 is 0.005. Since the p-value is below a significance level of 0.05, the coefficient for LDPP is statistically significant. 
+
+```{r}
+library(ggplot2)
+Chi_Health_Data$Income <- as.numeric(Chi_Health_Data$Income)
+max_Income <- max(Chi_Health_Data$Income, na.rm = TRUE)
+
+plot_3 <- ggplot(Chi_Health_Data, aes(x = LDPP_2022, y = Income)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue" ) +
+  labs( y = "Income",
+        x = "Number of children aged 1-5 with peak annual blood lead level(deciliter) ", 
+        title = "Relationship between lead exposure and Median Income") +
+scale_y_continuous(breaks = seq(0, ceiling(max_Income), by = 10000)) +
+  scale_x_continuous(breaks = seq(0, ceiling(max_LDPP_2022), by = 5))
+
+
+plot_3
+
+```
+
+
+# examining relationship between blood lead level and Income  
+```{r}
+library(ggplot2)
+fit_2 <- lm (Income ~ LDPP_2022, data = Chi_Health_Data)
+
+modelsummary::modelsummary(fit_2,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+
+```
+This regression shows that for every 1% increase in the percentage of children aged 1-5 that have elevated blood lead levels, there is a decrease of 13,560.156 in the Median income. The p-value for LDPP_2022 is p = <0.001. Since the p-value is below a significance level of 0.05, the coefficient for LDPP is statistically significant. 
+
+
+In essence, the negative correlation between the blood lead levels and income/graduation rate is statistically significant. These variables cannot be interpreted casually because the data comes from surveys, and I am not able to conduct a randomized study with this information. 
+
+
+
+## Conclusion
+
+The main question  guiding my research was, "How does the percentage of elevated blood lead levels in children aged 1-5 relate to success outcomes across different neighborhoods in Chicago?"
+
+In my data analysis, a clear pattern emerged: neighborhoods characterized by a higher percentage of children aged 1-5 with elevated blood lead levels exhibited not only lower graduation rates but also a reduced median income. Consequently, my investigation unveiled a negative correlation between a high percentage of children aged 1-5 with elevated blood lead levels and both income and graduation rates.
+
+This analysis comes with certain limitations, primarily the presence of numerous confounding variables that could influence the observed correlation. For instance, it is plausible that neighborhoods with a higher percentage of children aged 1-5 exhibiting elevated blood levels might also be correlated with with subpar schooling systems or diminished community support. The lower graduation rates could stem from various factors other than elevated blood lead levels.
+
+
+Given more time and resources, I would want to conduct a comprehensive survey that directly measures the IQ and behavioral health outcomes among children exposed to lead during their early years compared to those unexposed within the same neighborhood. This type of an in-depth, intra-community study would provide a more nuanced understanding of the impact of lead exposure on cognitive and behavioral development, allowing for a more robust evaluation of the relationship between blood lead levels and long-term outcomes.
+
+
