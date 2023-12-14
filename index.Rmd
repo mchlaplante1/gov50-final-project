@@ -83,7 +83,7 @@ max_LDPP_2022 <- max(Chi_Health_Data$LDPP_2022, na.rm = TRUE)
 
 ```{r}
 library(ggplot2)
-plot_1 <- ggplot(Chi_Health_Data, aes(x = LDPP_2022, y = Grad_Rate)) + 
+plot_2 <- ggplot(Chi_Health_Data, aes(x = LDPP_2022, y = Grad_Rate)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE, color = "blue" ) +
   labs( y = "Graduation Rate(%)",
@@ -92,7 +92,7 @@ plot_1 <- ggplot(Chi_Health_Data, aes(x = LDPP_2022, y = Grad_Rate)) +
 scale_y_continuous(breaks = seq(0, ceiling(max_Grad_Rate), by = 5)) +
   scale_x_continuous(breaks = seq(0, ceiling(max_LDPP_2022), by = 1))
 
-plot_1
+plot_2
 
 ```
 This plot shows that there is a negative correlation between Graduation rate and Blood Lead levels. This means that neighborhoods with a higher percentage of children aged 1-5 with blood lead levels above 5 micrograms per deciliter have lower graduation rates. 
@@ -122,6 +122,11 @@ This regression shows that for every 1% increase in the percentage of children a
 library(ggplot2)
 Chi_Health_Data$Income <- as.numeric(Chi_Health_Data$Income)
 max_Income <- max(Chi_Health_Data$Income, na.rm = TRUE)
+Chi_Health_Data$LDPP_2022 <- as.numeric(Chi_Health_Data$LDPP_2022)
+
+max_LDPP_2022 <- max(Chi_Health_Data$LDPP_2022, na.rm = TRUE)
+
+
 
 plot_3 <- ggplot(Chi_Health_Data, aes(x = LDPP_2022, y = Income)) + 
   geom_point() + 
