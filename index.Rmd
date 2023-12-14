@@ -29,21 +29,13 @@ The High School Graduation Rate (Grad_Rate) is the % of residents 25 or older wi
 The Income variable (Income) is measured in median household income, and the data was gathered through The American Community Survey.  (survey)
 
 
-
-# Loading data  
+#Relationship between dependent variables
 
 ```{r}
-
 
 library(readr)
 library(ggplot2)
 Chi_Health_Data <- read_csv("~/gov50-problem-set0/Final Project/Chi_Health_Data.csv")
-
-```
-#Relationship between dependent variables
-
-```{r}
-library(ggplot2)
 
 Chi_Health_Data$Grad_Rate <- as.numeric(Chi_Health_Data$Grad_Rate)
 Chi_Health_Data$Income <- as.numeric(Chi_Health_Data$Income)
